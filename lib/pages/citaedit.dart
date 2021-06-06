@@ -19,22 +19,22 @@ class _ModificarCitaState extends State<ModificarCita> {
   String? IdentificacionPaciente;
   String? NombresPaciente;
   String? ApellidosPaciente;
-
+  String? CodigoCita;
+  String? val;
+  List name = ['lucs', 'jose'];
   @override
   void initState() {
-    ControlCodigoCita =
-        TextEditingController(text: widget.perfilcita[widget.idperfilcita].CodigoCita);
-    ControlEstado =
-        TextEditingController(text: widget.perfilcita[widget.idperfilcita].EstadoCita);
-    ControlObservacion =
-        TextEditingController(text: widget.perfilcita[widget.idperfilcita].Observacion);
+    CodigoCita = widget.perfilcita[widget.idperfilcita].CodigoCita;
+    ControlEstado = TextEditingController(
+        text: widget.perfilcita[widget.idperfilcita].EstadoCita);
+    ControlObservacion = TextEditingController(
+        text: widget.perfilcita[widget.idperfilcita].Observacion);
 
     IdentificacionPaciente =
         widget.perfilcita[widget.idperfilcita].IdentificacionPaciente;
     NombresPaciente = widget.perfilcita[widget.idperfilcita].NombresPaciente;
-    ApellidosPaciente = widget.perfilcita[widget.idperfilcita].ApellidosPaciente;
-
-
+    ApellidosPaciente =
+        widget.perfilcita[widget.idperfilcita].ApellidosPaciente;
 
     // TODO: implement initState
     super.initState();
@@ -52,13 +52,20 @@ class _ModificarCitaState extends State<ModificarCita> {
         child: Center(
           child: ListView(
             children: <Widget>[
-              TextField(
-                controller: ControlCodigoCita,
-                decoration: InputDecoration(labelText: "Codigo de la cita"),
+              SizedBox(
+                height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
+                  Column(
+                    children: [
+                      Text('Codigo de la cita'),
+                      Text(
+                        CodigoCita!,
+                      ),
+                    ],
+                  ),
                   Column(
                     children: [
                       Text('Identificacion'),
@@ -80,24 +87,42 @@ class _ModificarCitaState extends State<ModificarCita> {
                       Text('Apellidos'),
                       Text(ApellidosPaciente!),
                     ],
-                  )
+                  ),
+                  
                 ],
+              ),
+              SizedBox(
+                height: 20,
               ),
               TextField(
                 controller: ControlEstado,
                 decoration: InputDecoration(labelText: "Estado de la cita"),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Text('Observación de la cita',
+                  style: TextStyle(fontSize: 15, color: Colors.cyan)),
               TextField(
+                maxLines: 5,
+                keyboardType:
+                    TextInputType.multiline, //Mostrara teclado numérico
                 controller: ControlObservacion,
-                decoration: InputDecoration(labelText: "Observación"),
+                decoration: InputDecoration(
+                  filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(3.0)),
+                  //probar suffix
+                ),
+              ),
+              SizedBox(
+                height: 20,
               ),
               ElevatedButton(
                 child: Text("Modificar cita"),
                 onPressed: () {
-                  EditarCita(
-                      widget.perfilcita[widget.idperfilcita].CodigoCita,
-                      ControlEstado.text,
-                      ControlObservacion.text);
+                  EditarCita(widget.perfilcita[widget.idperfilcita].CodigoCita,
+                      ControlEstado.text, ControlObservacion.text);
 
                   Navigator.pop(context);
                 },

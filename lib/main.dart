@@ -16,7 +16,7 @@ class LoginApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'LogIn',
       theme: ThemeData(primarySwatch: Colors.cyan),
-      home: LoginPage(),
+      home: MenuAdministrador(),
       routes: <String, WidgetBuilder>{
         '/menuadministrador': (BuildContext context) => new MenuAdministrador(),
       },

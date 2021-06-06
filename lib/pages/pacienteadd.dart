@@ -68,6 +68,7 @@ class _AddPacienteState extends State<AddPaciente> {
                         Container(
                           height: 50,
                           child: new TextField(
+                            maxLength: 11,
                             controller: IdentificacionController,
                             keyboardType: TextInputType.name,
                             decoration: InputDecoration(
@@ -143,6 +144,7 @@ class _AddPacienteState extends State<AddPaciente> {
                         Container(
                           height: 50,
                           child: new TextField(
+                            maxLength: 2,
                             controller: EdadController,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
@@ -188,6 +190,7 @@ class _AddPacienteState extends State<AddPaciente> {
                         Container(
                           height: 50,
                           child: new TextField(
+                            maxLength: 10,
                             controller: TelefonoController,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
