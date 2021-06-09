@@ -1,46 +1,48 @@
 import 'dart:convert';
+import 'package:clinica/pages/perfilcita.dart';
 import 'package:clinica/pages/personalatencionview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:clinica/models/paciente.dart';
-import 'citaview.dart';
+import 'package:clinica/models/cita.dart';
+import 'citaadd.dart';
 import 'menuadministrador.dart';
-import 'pacienteadd.dart';
-import 'perfilpaciente.dart';
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
+import 'pacienteview.dart';
 import 'package:clinica/requests/configurl.dart';
 
-Future<List<Paciente>> ListarPaciente(http.Client client) async {
-  final response = await http.get(Uri.parse(Url + 'GetDataPaciente.php'));
-  return compute(pasarpacienteaLista, response.body);
+
+Future<List<Citas>> ListarCitas(http.Client client) async {
+  final response = await http
+      .get(Uri.parse(Url+'GetDataCita.php'));
+  return compute(pasarcitalista, response.body);
 }
 
-List<Paciente> pasarpacienteaLista(String responseBody) {
+List<Citas> pasarcitalista(String responseBody) {
   final pasar = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-  return pasar.map<Paciente>((json) => Paciente.fromJson(json)).toList();
+  return pasar.map<Citas>((json) => Citas.fromJson(json)).toList();
 }
 
 void main() {
-  runApp(ListPaciente());
+  runApp(ListCitas());
 }
 
-class ListPaciente extends StatelessWidget {
+class ListCitas extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Pacientes',
+      title: 'Citas',
       theme: ThemeData(primarySwatch: Colors.cyan),
       routes: <String, WidgetBuilder>{
-        "/Personal": (BuildContext context) => ListPersonalAtencion(),
-        "/Cita": (BuildContext context) => ListCitas(),
+        "/Cita": (BuildContext context) => AddCita(),
         "/Menu": (BuildContext context) => MenuAdministrador(),
+        "/ListadoPaciente": (BuildContext context) => ListPaciente(),
+        "/ListadoPersonal": (BuildContext context) => ListPersonalAtencion(),
       },
       home: MyHomePage(
-        title: 'Personal de atención',
+        title: 'Citas',
       ),
     );
   }
@@ -80,15 +82,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               }),
         ),
-        title: Text('Pacientes'),
+        title: Text('Citas Agendadas'),
         actions: [
           IconButton(
-              tooltip: 'Registrar Paciente',
+              tooltip: 'Apartar citas',
               icon: Icon(Icons.add),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddPaciente()),
+                  MaterialPageRoute(builder: (context) => AddCita()),
                 );
               }),
         ],
@@ -105,17 +107,19 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: AwesomeBottomNav(
         icons: [
-          Icons.accessibility_new_rounded,
-          Icons.home,
-          Icons.assignment_ind_outlined,
           Icons.article_outlined,
+          Icons.home,
+          Icons.accessibility_new_rounded,
+          Icons.assignment_ind_outlined,
+
           // Icons.settings_outlined,
         ],
         highlightedIcons: [
-          Icons.accessibility_new_rounded,
-          Icons.home,
-          Icons.assignment_ind_outlined,
           Icons.article_outlined,
+          Icons.home,
+          Icons.accessibility_new_rounded,
+          Icons.assignment_ind_outlined,
+
           // Icons.settings,
         ],
         onTapped: (int value) {
@@ -125,10 +129,10 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pushNamed(context, "/Menu");
             }
             if (selectedIndex == 2) {
-              Navigator.pushNamed(context, "/Personal");
+              Navigator.pushNamed(context, "/ListadoPaciente");
             }
             if (selectedIndex == 3) {
-              Navigator.pushNamed(context, "/Cita");
+              Navigator.pushNamed(context, "/ListadoPersonal");
             }
           });
         },
@@ -143,7 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Widget getInfo(BuildContext context) {
   return FutureBuilder(
-    future: ListarPaciente(http.Client()),
+    future: ListarCitas(http.Client()),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
       switch (snapshot.connectionState) {
         case ConnectionState.waiting:
@@ -152,7 +156,7 @@ Widget getInfo(BuildContext context) {
         case ConnectionState.done:
           if (snapshot.hasError) return Text('Error: ${snapshot.error}');
           return snapshot.data != null
-              ? VistaPacientes(pacientes: snapshot.data)
+              ? VistaCitas(citas: snapshot.data)
               : Text(
                   'No hay datos',
                   style: TextStyle(color: Colors.black),
@@ -165,41 +169,45 @@ Widget getInfo(BuildContext context) {
   );
 }
 
-class VistaPacientes extends StatelessWidget {
-  List<Paciente> pacientes;
+class VistaCitas extends StatelessWidget {
+  List<Citas> citas;
 
-  VistaPacientes({Key? key, required this.pacientes}) : super(key: key);
+  VistaCitas({Key? key, required this.citas}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: pacientes == null ? 0 : pacientes.length,
+        itemCount: citas == null ? 0 : citas.length,
         itemBuilder: (context, posicion) {
           return ListTile(
             onTap: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => PerfilPaciente(
-                          pacientes: pacientes, idperfilpaciente: posicion)));
+                      builder: (BuildContext context) => PerfilCita(
+                          perfilcitas: citas, idperfilcita: posicion)));
             },
             leading: Container(
               padding: EdgeInsets.all(5.0),
-              width: 50,
-              height: 50,
-              child: Image.network(pacientes[posicion].Foto),
+              width: 110,
+              height: 80,
+              child: Text("Fecha de la cita " + citas[posicion].FechaCita),
             ),
-            title: Text(pacientes[posicion].Nombres),
-            subtitle: Text(pacientes[posicion].Apellidos),
+            title: Text(
+                "Identificación: " + citas[posicion].IdentificacionPaciente),
+            subtitle: Text("Nombre: " +
+                citas[posicion].NombresPaciente +
+                " " +
+                citas[posicion].ApellidosPaciente),
             trailing: Container(
-              width: 80,
+              width: 100,
               height: 40,
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,
-              child: Text(pacientes[posicion].Estado),
-              color: pacientes[posicion].Estado == 'Activo'
-                  ? Colors.lightGreenAccent
-                  : Colors.red,
+              child: Text(citas[posicion].EstadoCita),
+              color: citas[posicion].EstadoCita == 'No atendido'
+                  ? Colors.red
+                  : Colors.lightGreenAccent,
             ),
           );
         });

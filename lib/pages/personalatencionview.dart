@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:clinica/pages/perfilpersonalatencion.dart';
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
-import 'citaadd.dart';
 import 'citaview.dart';
 import 'menuadministrador.dart';
 import 'pacienteview.dart';

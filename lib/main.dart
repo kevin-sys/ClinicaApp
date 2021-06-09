@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:clinica/pages/menuempleado.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:clinica/pages/menuadministrador.dart';
 import 'package:clinica/requests/configurl.dart';
+import 'package:clinica/pages/perfilcita.dart';
 
+import 'models/cita.dart';
 
 void main() => runApp(LoginApp());
 String? usuario;
@@ -16,9 +19,10 @@ class LoginApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'LogIn',
       theme: ThemeData(primarySwatch: Colors.cyan),
-      home: MenuAdministrador(),
+      home: LoginPage(),
       routes: <String, WidgetBuilder>{
         '/menuadministrador': (BuildContext context) => new MenuAdministrador(),
+        '/menuempleado': (BuildContext context) => new MenuEmpleado(),
       },
     );
   }
@@ -36,15 +40,16 @@ class _LoginPageState extends State<LoginPage> {
   var mensaje = '';
 
   Future<List> _login() async {
-    final response = await http.post(
-        Uri.parse(Url+'Login.php'),
-        body: {
-          "Usuario": Usuario.text,
-          "Pass": Pass.text,
-        });
+    final response = await http.post(Uri.parse(Url + 'Login.php'), body: {
+      "Usuario": Usuario.text,
+      "Pass": Pass.text,
+    });
 
     var datauser = json.decode(response.body);
-    print(datauser);
+    String IdUsuario = datauser[0]['Identificacion'];
+
+    print(IdUsuario);
+
     if (datauser.length == 0) {
       setState(() {
         mensaje = "¡Usuario o contraseña incorrecta!";
@@ -52,8 +57,8 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       if (datauser[0]['TipoUsuario'] == 'Administrador') {
         Navigator.pushReplacementNamed(context, '/menuadministrador');
-      } else if (datauser[0]['TipoUsuario'] == 'Personal de atencion') {
-        Navigator.pushReplacementNamed(context, '/menumedico');
+      } else if (datauser[0]['TipoUsuario'] == 'Personal') {
+        Navigator.pushReplacementNamed(context, '/menuempleado');
       }
 
       setState(() {

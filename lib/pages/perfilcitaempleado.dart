@@ -1,5 +1,7 @@
 import 'package:clinica/models/cita.dart';
 import 'package:flutter/material.dart';
+
+import 'citaedit.dart';
 var contextoppal;
 class PerfilCita extends StatelessWidget {
   final idperfilcita;
@@ -16,7 +18,18 @@ class PerfilCita extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text('Detalles de la cita'),
-         
+          actions: [
+            IconButton(
+                tooltip: 'Detalle cita',
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                 Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => ModificarCita(
+                              perfilcita: perfilcitas, idperfilcita: idperfilcita)));
+                }),
+          ],
         ),
         body: ListView(children: [
           Container(

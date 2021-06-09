@@ -1,9 +1,7 @@
 import 'package:clinica/models/personalatencion.dart';
-import 'package:clinica/pages/personalatencionview.dart';
 import 'package:clinica/requests/personalatencionhttp.dart';
 import 'package:flutter/material.dart';
 import 'package:clinica/pages/personalatencionedit.dart';
-import 'package:http/http.dart' as http;
 var contextoppal;
 class PerfilPersonalAtencion extends StatelessWidget {
   final idperfilpc;

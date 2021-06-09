@@ -88,7 +88,15 @@ class _ModificarCitaState extends State<ModificarCita> {
                       Text(ApellidosPaciente!),
                     ],
                   ),
-                  
+                  new DropdownButton<String>(
+                    items: <String>['A', 'B', 'C', 'D'].map((String value) {
+                      return new DropdownMenuItem<String>(
+                        value: value,
+                        child: new Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (_) {},
+                  )
                 ],
               ),
               SizedBox(
@@ -106,7 +114,7 @@ class _ModificarCitaState extends State<ModificarCita> {
               TextField(
                 maxLines: 5,
                 keyboardType:
-                    TextInputType.multiline, //Mostrara teclado numérico
+                    TextInputType.multiline, 
                 controller: ControlObservacion,
                 decoration: InputDecoration(
                   filled: true,
