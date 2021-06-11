@@ -24,6 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
   awesome_bottom_navigation: ^0.0.4
+  shared_preferences: ^2.0.6
+  fluttertoast: ^3.1.3
+
+
+
 
 
 

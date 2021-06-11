@@ -20,7 +20,7 @@ class MenuEmpleado extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Menu Principal',
       theme: ThemeData(
-        primarySwatch: Colors.indigo,
+        primarySwatch: Colors.lightGreen,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: <String, WidgetBuilder>{
@@ -182,7 +182,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
           });
         },
         bodyBgColor: _bgColor,
-        highlightColor: Color(0xFF304FFE),
+        highlightColor: Color(0xFF66BB6A),
         navFgColor: Colors.grey,
         navBgColor: Colors.white,
       ),

@@ -11,12 +11,11 @@ import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
 import 'pacienteview.dart';
 import 'package:clinica/requests/configurl.dart';
 
-
-Future<List<Citas>> ListarCitas(http.Client client) async {
-  final response = await http
-      .get(Uri.parse(Url+'GetDataCita.php'));
+Future<List<Citas>> ListarCita(http.Client client) async {
+  final response = await http.get(Uri.parse(Url + 'GetDataPaciente.php'));
   return compute(pasarcitalista, response.body);
 }
+
 
 List<Citas> pasarcitalista(String responseBody) {
   final pasar = json.decode(responseBody).cast<Map<String, dynamic>>();
@@ -57,6 +56,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+    TextEditingController IdentificacionPaciente = new TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -147,7 +148,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Widget getInfo(BuildContext context) {
   return FutureBuilder(
-    future: ListarCitas(http.Client()),
+    future: ListarCita(http.Client()),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
       switch (snapshot.connectionState) {
         case ConnectionState.waiting:
@@ -180,6 +181,7 @@ class VistaCitas extends StatelessWidget {
         itemCount: citas == null ? 0 : citas.length,
         itemBuilder: (context, posicion) {
           return ListTile(
+            
             onTap: () {
               Navigator.push(
                   context,

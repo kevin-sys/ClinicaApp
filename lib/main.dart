@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:clinica/pages/code.dart';
 import 'package:clinica/pages/menuempleado.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:clinica/pages/menuadministrador.dart';
 import 'package:clinica/requests/configurl.dart';
-import 'package:clinica/pages/perfilcita.dart';
-
-import 'models/cita.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(LoginApp());
 String? usuario;
@@ -19,7 +18,7 @@ class LoginApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'LogIn',
       theme: ThemeData(primarySwatch: Colors.cyan),
-      home: LoginPage(),
+      home: PruebaLogin(),
       routes: <String, WidgetBuilder>{
         '/menuadministrador': (BuildContext context) => new MenuAdministrador(),
         '/menuempleado': (BuildContext context) => new MenuEmpleado(),
@@ -45,29 +44,65 @@ class _LoginPageState extends State<LoginPage> {
       "Pass": Pass.text,
     });
 
-    var datauser = json.decode(response.body);
-    String IdUsuario = datauser[0]['Identificacion'];
+    var jsonlogin = json.decode(response.body);
+    String IdUsuario = jsonlogin[0]['Identificacion'];
 
     print(IdUsuario);
 
-    if (datauser.length == 0) {
+    if (jsonlogin.length == 0) {
       setState(() {
         mensaje = "¡Usuario o contraseña incorrecta!";
       });
     } else {
-      if (datauser[0]['TipoUsuario'] == 'Administrador') {
+      /*guardar_datos(jsonlogin['Identificacion'], jsonlogin['Usuario'],
+          jsonlogin['TipoUsuario'], jsonlogin['Pass']);*/
+
+      if (jsonlogin[0]['TipoUsuario'] == 'Administrador') {
         Navigator.pushReplacementNamed(context, '/menuadministrador');
-      } else if (datauser[0]['TipoUsuario'] == 'Personal') {
+      } else if (jsonlogin[0]['TipoUsuario'] == 'Personal') {
         Navigator.pushReplacementNamed(context, '/menuempleado');
       }
 
       setState(() {
-        usuario = datauser[0]['Usuario'];
+        usuario = jsonlogin[0]['Usuario'];
       });
     }
 
-    return datauser;
+    return jsonlogin;
   }
+
+  /* Future<void> guardar_datos(Identificacion, Usuario, TipoUsuario, Pass) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('Identificacion', Identificacion);
+    await prefs.setString('Usuario', Usuario);
+    await prefs.setString('TipoUsuario', TipoUsuario);
+    await prefs.setString('Pass', Pass);
+  }
+
+  String? IdentificacionVar;
+  String? UsuarioVar;
+  String? TipoUsuarioVar;
+  String? PassVar;
+
+  Future<void> mostrar_datos() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    IdentificacionVar = await prefs.getString('Identificacion');
+    UsuarioVar = await prefs.getString('Usuario');
+    TipoUsuarioVar = await prefs.getString('TipoUsuario');
+    PassVar = await prefs.getString('Pass');
+    print(IdentificacionVar);
+    if (IdentificacionVar != '') {
+      if (IdentificacionVar != null) {
+        Navigator.pushReplacementNamed(context, '/menuadministrador');
+      }
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+   // mostrar_datos();
+  }
+*/
 
   @override
   Widget build(BuildContext context) {
