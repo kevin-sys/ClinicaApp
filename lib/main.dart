@@ -18,10 +18,9 @@ class LoginApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'LogIn',
       theme: ThemeData(primarySwatch: Colors.cyan),
-      home: PruebaLogin(),
+      home: LoginPage(),
       routes: <String, WidgetBuilder>{
         '/menuadministrador': (BuildContext context) => new MenuAdministrador(),
-        '/menuempleado': (BuildContext context) => new MenuEmpleado(),
       },
     );
   }
@@ -54,13 +53,13 @@ class _LoginPageState extends State<LoginPage> {
         mensaje = "¡Usuario o contraseña incorrecta!";
       });
     } else {
-      /*guardar_datos(jsonlogin['Identificacion'], jsonlogin['Usuario'],
-          jsonlogin['TipoUsuario'], jsonlogin['Pass']);*/
-
       if (jsonlogin[0]['TipoUsuario'] == 'Administrador') {
         Navigator.pushReplacementNamed(context, '/menuadministrador');
       } else if (jsonlogin[0]['TipoUsuario'] == 'Personal') {
-        Navigator.pushReplacementNamed(context, '/menuempleado');
+        // Navigator.pushReplacementNamed(context, '/BusquedaCitas', arguments: {'ID': IdUsuario});
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return BusquedaCitas(IdUsuario);
+        }));
       }
 
       setState(() {
