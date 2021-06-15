@@ -111,7 +111,7 @@ class _AddUsuarioState extends State<AddUsuario> {
                   },
                   color: Colors.cyan,
                   child: new Text(
-                    'Guardar usario',
+                    'Guardar usuario',
                     style: new TextStyle(color: Colors.white),
                   ),
                 ),
