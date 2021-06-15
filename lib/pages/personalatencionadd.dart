@@ -151,7 +151,10 @@ class _AddPersonalAtencionState extends State<AddPersonalAtencion> {
                       ApellidosController.text.trim(),
                       TipoController.text.trim(),
                     );
-                    Navigator.pop(context, true);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => AddPersonalAtencion()));
                   },
                   color: Colors.cyan,
                   child: new Text(

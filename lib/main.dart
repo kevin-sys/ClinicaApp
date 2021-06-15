@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:clinica/pages/code.dart';
-import 'package:clinica/pages/menuempleado.dart';
+import 'package:clinica/pages/citapersonal.dart';
+import 'package:clinica/pages/usuarioadd.dart';
+import 'package:clinica/pages/usuarioview.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:clinica/pages/menuadministrador.dart';
 import 'package:clinica/requests/configurl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(LoginApp());
+void main() => runApp(AddUsuario());
 String? usuario;
 
 class LoginApp extends StatelessWidget {
@@ -44,9 +45,6 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     var jsonlogin = json.decode(response.body);
-    String IdUsuario = jsonlogin[0]['Identificacion'];
-
-    print(IdUsuario);
 
     if (jsonlogin.length == 0) {
       setState(() {
@@ -56,15 +54,12 @@ class _LoginPageState extends State<LoginPage> {
       if (jsonlogin[0]['TipoUsuario'] == 'Administrador') {
         Navigator.pushReplacementNamed(context, '/menuadministrador');
       } else if (jsonlogin[0]['TipoUsuario'] == 'Personal') {
-        // Navigator.pushReplacementNamed(context, '/BusquedaCitas', arguments: {'ID': IdUsuario});
+        String IdUsuario = jsonlogin[0]['Identificacion'];
+        String NameUsuario = jsonlogin[0]['Usuario'];
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return BusquedaCitas(IdUsuario);
+          return BusquedaCitas(idUsuario: IdUsuario, nameUsuario: NameUsuario);
         }));
       }
-
-      setState(() {
-        usuario = jsonlogin[0]['Usuario'];
-      });
     }
 
     return jsonlogin;
@@ -115,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(16.0),
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 35),
+              SizedBox(height: 120),
               Card(
                 margin: EdgeInsets.all(10.0),
                 elevation: 6.0,

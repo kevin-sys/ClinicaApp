@@ -1,66 +1,50 @@
 import 'dart:convert';
-import 'package:clinica/pages/perfilcita.dart';
+import 'package:clinica/models/usuario.dart';
 import 'package:clinica/pages/personalatencionview.dart';
+import 'package:clinica/pages/usuarioadd.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:clinica/models/cita.dart';
-import 'citaadd.dart';
+import 'package:clinica/models/paciente.dart';
+import 'citaview.dart';
 import 'menuadministrador.dart';
+import 'perfilpaciente.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
-import 'pacienteview.dart';
 import 'package:clinica/requests/configurl.dart';
 
-var mensaje = '';
-
-Future<List<Citas>> ListarCitas(http.Client client) async {
-  BusquedaCitas b ;
-
-  b=BusquedaCitas("");
-  final response = await http.post(Uri.parse(Url + 'FindCitaId.php'), body: {
-    "IdentificacionPersonal": b.getidUsuario,
-  });
-  return compute(pasarcitalista, response.body);
+Future<List<UsuarioSystem>> ListarUsuario(http.Client client) async {
+  final response = await http.get(Uri.parse(Url + 'GetDataUsuario.php'));
+  return compute(pasarusarioaLista, response.body);
 }
 
-List<Citas> pasarcitalista(String responseBody) {
+List<UsuarioSystem> pasarusarioaLista(String responseBody) {
   final pasar = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-  return pasar.map<Citas>((json) => Citas.fromJson(json)).toList();
+  return pasar.map<UsuarioSystem>((json) => UsuarioSystem.fromJson(json)).toList();
 }
 
+void main() {
+  runApp(ListUsuario());
+}
 
- class BusquedaCitas extends StatelessWidget {
-
-  BusquedaCitas(this.idUsuario);
-
-  late final String idUsuario;
-
-  void set setidUsuario(String idUsuario){
-    idUsuario = idUsuario;
-  }
-
-  String get getidUsuario{
-    return idUsuario;
-  }
+class ListUsuario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Citas'+idUsuario,
+      title: 'Usuarios',
       theme: ThemeData(primarySwatch: Colors.cyan),
       routes: <String, WidgetBuilder>{
-        "/Cita": (BuildContext context) => AddCita(),
+        "/Personal": (BuildContext context) => ListPersonalAtencion(),
+        "/Cita": (BuildContext context) => ListCitas(),
         "/Menu": (BuildContext context) => MenuAdministrador(),
-        "/ListadoPaciente": (BuildContext context) => ListPaciente(),
-        "/ListadoPersonal": (BuildContext context) => ListPersonalAtencion(),
       },
       home: MyHomePage(
-        title: 'Citas',
+        title: 'Usuarios del sistema',
       ),
     );
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
@@ -83,14 +67,29 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.all(5.0),
+          width: 50,
+          height: 50,
+          child: IconButton(
+              tooltip: 'Volver al menu',
+              icon: Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MenuAdministrador()),
+                );
+              }),
+        ),
+        title: Text('Usuarios'),
         actions: [
           IconButton(
-              tooltip: 'Apartar citas',
+              tooltip: 'Registrar usuario',
               icon: Icon(Icons.add),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddCita()),
+                  MaterialPageRoute(builder: (context) => AddUsuario()),
                 );
               }),
         ],
@@ -107,19 +106,17 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       bottomNavigationBar: AwesomeBottomNav(
         icons: [
-          Icons.article_outlined,
-          Icons.home,
           Icons.accessibility_new_rounded,
+          Icons.home,
           Icons.assignment_ind_outlined,
-
+          Icons.article_outlined,
           // Icons.settings_outlined,
         ],
         highlightedIcons: [
-          Icons.article_outlined,
-          Icons.home,
           Icons.accessibility_new_rounded,
+          Icons.home,
           Icons.assignment_ind_outlined,
-
+          Icons.article_outlined,
           // Icons.settings,
         ],
         onTapped: (int value) {
@@ -129,10 +126,10 @@ class _MyHomePageState extends State<MyHomePage> {
               Navigator.pushNamed(context, "/Menu");
             }
             if (selectedIndex == 2) {
-              Navigator.pushNamed(context, "/ListadoPaciente");
+              Navigator.pushNamed(context, "/Personal");
             }
             if (selectedIndex == 3) {
-              Navigator.pushNamed(context, "/ListadoPersonal");
+              Navigator.pushNamed(context, "/Cita");
             }
           });
         },
@@ -147,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Widget getInfo(BuildContext context) {
   return FutureBuilder(
-    future: ListarCitas(http.Client()),
+    future: ListarUsuario(http.Client()),
     builder: (BuildContext context, AsyncSnapshot snapshot) {
       switch (snapshot.connectionState) {
         case ConnectionState.waiting:
@@ -156,7 +153,7 @@ Widget getInfo(BuildContext context) {
         case ConnectionState.done:
           if (snapshot.hasError) return Text('Error: ${snapshot.error}');
           return snapshot.data != null
-              ? VistaCitas(citas: snapshot.data)
+              ? VistaUsuarios(usuarios: snapshot.data)
               : Text(
                   'No hay datos',
                   style: TextStyle(color: Colors.black),
@@ -169,44 +166,33 @@ Widget getInfo(BuildContext context) {
   );
 }
 
-class VistaCitas extends StatelessWidget {
-  List<Citas> citas;
+class VistaUsuarios extends StatelessWidget {
+  List<UsuarioSystem> usuarios;
 
-  VistaCitas({Key? key, required this.citas}) : super(key: key);
+  VistaUsuarios({Key? key, required this.usuarios}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: citas == null ? 0 : citas.length,
+        itemCount: usuarios == null ? 0 : usuarios.length,
         itemBuilder: (context, posicion) {
           return ListTile(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => PerfilCita(
-                          perfilcitas: citas, idperfilcita: posicion)));
-            },
             leading: Container(
               padding: EdgeInsets.all(5.0),
-              width: 110,
-              height: 80,
-              child: Text("Fecha de la cita " + citas[posicion].FechaCita),
+              width: 150,
+              height: 50,
+              child: Text('Identificación '+usuarios[posicion].Identificacion),
             ),
-            title: Text(
-                "Identificación: " + citas[posicion].IdentificacionPaciente),
-            subtitle: Text("Nombre: " +
-                citas[posicion].NombresPaciente +
-                " " +
-                citas[posicion].ApellidosPaciente),
+            title: Text('Usuario '+usuarios[posicion].Usuario),
+            subtitle: Text('Registrado '+usuarios[posicion].FechaRegistro),
             trailing: Container(
-              width: 100,
+              width: 110,
               height: 40,
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,
-              child: Text(citas[posicion].EstadoCita),
-              color: citas[posicion].EstadoCita == 'No atendido'
-                  ? Colors.red
+              child: Text(usuarios[posicion].TipoUsuario),
+              color: usuarios[posicion].TipoUsuario == 'Administrador'
+                  ? Colors.deepOrangeAccent
                   : Colors.lightGreenAccent,
             ),
           );

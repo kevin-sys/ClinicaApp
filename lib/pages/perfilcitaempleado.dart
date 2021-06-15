@@ -1,12 +1,13 @@
 import 'package:clinica/models/cita.dart';
 import 'package:flutter/material.dart';
-
 import 'citaedit.dart';
+
 var contextoppal;
-class PerfilCita extends StatelessWidget {
+
+class PerfilCitaEmpleado extends StatelessWidget {
   final idperfilcita;
   final List<Citas> perfilcitas;
-  PerfilCita({Key? key, required this.perfilcitas, this.idperfilcita});
+  PerfilCitaEmpleado({Key? key, required this.perfilcitas, this.idperfilcita});
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,12 @@ class PerfilCita extends StatelessWidget {
                 tooltip: 'Detalle cita',
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                 Navigator.push(
+                  Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (BuildContext context) => ModificarCita(
-                              perfilcita: perfilcitas, idperfilcita: idperfilcita)));
+                              perfilcita: perfilcitas,
+                              idperfilcita: idperfilcita)));
                 }),
           ],
         ),
@@ -57,17 +59,20 @@ class PerfilCita extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 10),
                           child: Column(
                             children: [
-                              Text('Datos del paciente', style: TextStyle(fontSize: 20,color: Colors.cyan)),
+                              Text('Datos del paciente',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.cyan)),
                               SizedBox(height: 10),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Column(
                                     children: [
                                       Text('Identificacion'),
                                       Text(
-                                        perfilcitas[idperfilcita].IdentificacionPaciente,
+                                        perfilcitas[idperfilcita]
+                                            .IdentificacionPaciente,
                                       ),
                                     ],
                                   ),
@@ -75,14 +80,16 @@ class PerfilCita extends StatelessWidget {
                                     children: [
                                       Text('Nombres'),
                                       Text(
-                                        perfilcitas[idperfilcita].NombresPaciente,
+                                        perfilcitas[idperfilcita]
+                                            .NombresPaciente,
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
                                       Text('Apellidos'),
-                                      Text(perfilcitas[idperfilcita].ApellidosPaciente),
+                                      Text(perfilcitas[idperfilcita]
+                                          .ApellidosPaciente),
                                     ],
                                   )
                                 ],
@@ -90,19 +97,22 @@ class PerfilCita extends StatelessWidget {
                               SizedBox(
                                 height: 40,
                               ),
-                              Text('Datos del personal de atención', style: TextStyle(fontSize: 20,color: Colors.cyan)),
+                              Text('Datos del personal de atención',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.cyan)),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Column(
                                     children: [
                                       Text('Identificacion'),
                                       Text(
-                                        perfilcitas[idperfilcita].IdentificacionPersonal,
+                                        perfilcitas[idperfilcita]
+                                            .IdentificacionPersonal,
                                       ),
                                     ],
                                   ),
@@ -110,14 +120,16 @@ class PerfilCita extends StatelessWidget {
                                     children: [
                                       Text('Nombres'),
                                       Text(
-                                        perfilcitas[idperfilcita].NombresPersonal,
+                                        perfilcitas[idperfilcita]
+                                            .NombresPersonal,
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
                                       Text('Apellidos'),
-                                      Text(perfilcitas[idperfilcita].ApellidosPersonal),
+                                      Text(perfilcitas[idperfilcita]
+                                          .ApellidosPersonal),
                                     ],
                                   ),
                                   Column(
@@ -133,13 +145,15 @@ class PerfilCita extends StatelessWidget {
                               SizedBox(
                                 height: 40,
                               ),
-                              Text('Datos de la cita', style: TextStyle(fontSize: 20,color: Colors.cyan)),
+                              Text('Datos de la cita',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.cyan)),
                               SizedBox(
                                 height: 10,
                               ),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Column(
                                     children: [
@@ -160,7 +174,9 @@ class PerfilCita extends StatelessWidget {
                                   Column(
                                     children: [
                                       Text('Fecha'),
-                                      Text(perfilcitas[idperfilcita].FechaCita,),
+                                      Text(
+                                        perfilcitas[idperfilcita].FechaCita,
+                                      ),
                                     ],
                                   ),
                                   Column(
@@ -174,8 +190,9 @@ class PerfilCita extends StatelessWidget {
                                           perfilcitas[idperfilcita].EstadoCita,
                                           style: TextStyle(fontSize: 15),
                                         ),
-                                        color:
-                                        perfilcitas[idperfilcita].EstadoCita == 'No atendido'
+                                        color: perfilcitas[idperfilcita]
+                                                    .EstadoCita ==
+                                                'No atendido'
                                             ? Colors.red
                                             : Colors.lightGreenAccent,
                                       ),
@@ -186,13 +203,15 @@ class PerfilCita extends StatelessWidget {
                               SizedBox(
                                 height: 20,
                               ),
-                              Text('Observación', style: TextStyle(fontSize: 20,color: Colors.cyan)),
+                              Text('Observación',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.cyan)),
                               Container(
                                 padding: EdgeInsets.all(5.0),
                                 width: 700,
                                 height: 100,
-                                child: Text(perfilcitas[idperfilcita].Observacion),
-
+                                child:
+                                    Text(perfilcitas[idperfilcita].Observacion),
                               ),
                               SizedBox(
                                 height: 10,
@@ -201,7 +220,9 @@ class PerfilCita extends StatelessWidget {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  child: Text('Volver al listado', style: TextStyle(fontSize: 20,color: Colors.white))),
+                                  child: Text('Volver al listado',
+                                      style: TextStyle(
+                                          fontSize: 20, color: Colors.white))),
                             ],
                           ),
                         )
@@ -217,4 +238,3 @@ class PerfilCita extends StatelessWidget {
     );
   }
 }
-

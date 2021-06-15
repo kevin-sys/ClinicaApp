@@ -20,8 +20,6 @@ class _ModificarCitaState extends State<ModificarCita> {
   String? NombresPaciente;
   String? ApellidosPaciente;
   String? CodigoCita;
-  String? val;
-  List name = ['lucs', 'jose'];
   @override
   void initState() {
     CodigoCita = widget.perfilcita[widget.idperfilcita].CodigoCita;
@@ -88,15 +86,7 @@ class _ModificarCitaState extends State<ModificarCita> {
                       Text(ApellidosPaciente!),
                     ],
                   ),
-                  new DropdownButton<String>(
-                    items: <String>['A', 'B', 'C', 'D'].map((String value) {
-                      return new DropdownMenuItem<String>(
-                        value: value,
-                        child: new Text(value),
-                      );
-                    }).toList(),
-                    onChanged: (_) {},
-                  )
+
                 ],
               ),
               SizedBox(

@@ -2,6 +2,7 @@
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
 import 'package:clinica/pages/personalatencionadd.dart';
 import 'package:clinica/pages/personalatencionview.dart';
+import 'package:clinica/pages/usuarioview.dart';
 import 'package:flutter/material.dart';
 
 import 'citaadd.dart';
@@ -30,6 +31,8 @@ class MenuAdministrador extends StatelessWidget {
         "/ListadoPaciente": (BuildContext context) => ListPaciente(),
         "/ListadoPersonal": (BuildContext context) => ListPersonalAtencion(),
         "/ListadoCitas": (BuildContext context) => ListCitas(),
+        "/ListadoUsuario": (BuildContext context) => ListUsuario(),
+
       },
       home: ExampleHomePage(),
     );
@@ -132,7 +135,7 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
                       padding: EdgeInsets.all(10),
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, "/Usuarios");
+                          Navigator.pushNamed(context, "/ListadoUsuario");
                         },
                         child: SizedBox(
                           width: 100,

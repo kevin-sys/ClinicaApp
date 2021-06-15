@@ -189,18 +189,18 @@ class VistaCitas extends StatelessWidget {
             },
             leading: Container(
               padding: EdgeInsets.all(5.0),
-              width: 110,
-              height: 80,
+              width: 140,
+              height: 120,
               child: Text("Fecha de la cita " + citas[posicion].FechaCita),
             ),
             title: Text(
-                "Identificación: " + citas[posicion].IdentificacionPaciente),
+                "Identificación " + citas[posicion].IdentificacionPaciente),
             subtitle: Text("Nombre: " +
                 citas[posicion].NombresPaciente +
                 " " +
                 citas[posicion].ApellidosPaciente),
             trailing: Container(
-              width: 100,
+              width: 130,
               height: 40,
               padding: EdgeInsets.all(10),
               alignment: Alignment.center,

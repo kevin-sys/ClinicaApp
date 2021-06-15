@@ -234,7 +234,10 @@ class _AddPacienteState extends State<AddPaciente> {
                                 TelefonoController.text.trim(),
                                 CiudadController.text.trim(),
                               );
-                              Navigator.pop(context, true);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) => AddPaciente()));
                             },
                             color: Colors.cyan,
                             child: new Text(
