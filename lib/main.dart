@@ -1,15 +1,14 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:clinica/pages/citapersonal.dart';
-import 'package:clinica/pages/usuarioadd.dart';
-import 'package:clinica/pages/usuarioview.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:clinica/pages/menuadministrador.dart';
 import 'package:clinica/requests/configurl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(AddUsuario());
+void main() => runApp(LoginApp());
 String? usuario;
 
 class LoginApp extends StatelessWidget {

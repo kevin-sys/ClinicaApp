@@ -112,7 +112,7 @@ class PerfilPersonalAtencion extends StatelessWidget {
                                     children: [
                                       Text('Tipo'),
                                       Container(
-                                        width: 100,
+                                        width: 130,
                                         height: 50,
                                         padding: EdgeInsets.all(10),
                                         alignment: Alignment.center,
@@ -150,7 +150,7 @@ class PerfilPersonalAtencion extends StatelessWidget {
                                     children: [
                                       Text('Trabajando'),
                                       Container(
-                                        width: 100,
+                                        width: 130,
                                         height: 50,
                                         padding: EdgeInsets.all(10),
                                         alignment: Alignment.center,

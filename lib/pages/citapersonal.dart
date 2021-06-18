@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:clinica/models/cita.dart';
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
 import 'package:clinica/requests/configurl.dart';
+import 'package:clinica/main.dart';
+
 
 String Id = '';
 String Name = '';
@@ -70,6 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Citas Agendadas'+Name),
+        actions: [
+          IconButton(
+              tooltip: 'Cerrar sesión',
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginApp()),
+                );
+              }),
+        ],
       ),
       body: getInfo(context),
       floatingActionButton: FloatingActionButton(

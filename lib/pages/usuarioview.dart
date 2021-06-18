@@ -5,10 +5,8 @@ import 'package:clinica/pages/usuarioadd.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:clinica/models/paciente.dart';
 import 'citaview.dart';
 import 'menuadministrador.dart';
-import 'perfilpaciente.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
 import 'package:clinica/requests/configurl.dart';

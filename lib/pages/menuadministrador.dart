@@ -1,5 +1,6 @@
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:awesome_bottom_navigation/awesome_bottom_navigation.dart';
+import 'package:clinica/main.dart';
 import 'package:clinica/pages/personalatencionadd.dart';
 import 'package:clinica/pages/personalatencionview.dart';
 import 'package:clinica/pages/usuarioview.dart';
@@ -35,6 +36,7 @@ class MenuAdministrador extends StatelessWidget {
 
       },
       home: ExampleHomePage(),
+      
     );
   }
 }
@@ -52,6 +54,17 @@ class _ExampleHomePageState extends State<ExampleHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Menu Principal'),
+        actions: [
+          IconButton(
+              tooltip: 'Cerrar sesión',
+              icon: Icon(Icons.logout),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginApp()),
+                );
+              }),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.only(top: 130, bottom: 10, right: 10, left: 10),
